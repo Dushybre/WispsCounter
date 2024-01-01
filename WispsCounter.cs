@@ -84,48 +84,40 @@ namespace  WispsCounter
         }
 
         public override void Render()
-        {
-            if (!CanRender)
-                return;
-            var origStartPoint = GameController.LeftPanel.StartDrawPoint;
+{
+    if (!CanRender)
+        return;
 
-            var rightHalfDrawPoint = origStartPoint.Translate(Settings.DrawXOffset.Value - GameController.IngameState.IngameUi.MapSideUI.Width);
-            leftPanelStartDrawRect = new RectangleF(rightHalfDrawPoint.X, rightHalfDrawPoint.Y, 1, 1);
+    var wispsItems = new[] {
+        (purpleWisps, Settings.PurpleWispsTextColor),
+        (yellowWisps, Settings.YellowWispsTextColor),
+        (blueWisps, Settings.BlueWispsTextColor)    
+    };
 
-            var wispsItems = new[] {
-                (purpleWisps, Settings.PurpleWispsTextColor),
-                (yellowWisps, Settings.YellowWispsTextColor),
-                (blueWisps, Settings.BlueWispsTextColor)    
-            };
+    if(Settings.EnableTotalWisps) {
+        wispsItems = new[] {
+            (purpleWisps, Settings.PurpleWispsTextColor),
+            (yellowWisps, Settings.YellowWispsTextColor),
+            (blueWisps, Settings.BlueWispsTextColor),
+            (totalWisps, Settings.TotalWispsTextColor)  
+        };
+    }
+    
+    var width = wispsItems.Max(x => Graphics.MeasureText(x.Item1).X);
+    var height = wispsItems.Sum(x => Graphics.MeasureText(x.Item1).Y);
 
-            if(Settings.EnableTotalWisps) {
-                wispsItems = new[] {
-                    (purpleWisps, Settings.PurpleWispsTextColor),
-                    (yellowWisps, Settings.YellowWispsTextColor),
-                    (blueWisps, Settings.BlueWispsTextColor),
-                    (totalWisps, Settings.TotalWispsTextColor)  
-                };
-            }
-			
-            var rightTextBounds = wispsItems.Select(x => Graphics.MeasureText(x.Item1)).ToList()
-                switch { var s => new Vector2N(s.DefaultIfEmpty(Vector2N.Zero).Max(x => x.X), s.Sum(x => x.Y)) };
-            var leftTextBounds = wispsItems.Select(x => Graphics.MeasureText(x.Item1)).ToList()
-                switch { var s => new Vector2N(s.DefaultIfEmpty(Vector2N.Zero).Max(x => x.X), s.Sum(x => x.Y)) };
+    var backgroundRectangleF = new RectangleF(Settings.PositionX - 20, Settings.PositionY, width + 40, height + 10);
+    Graphics.DrawImage("preload-new.png", backgroundRectangleF, Settings.BackgroundColor);
 
-            var sumX = rightTextBounds.X + leftTextBounds.X + 5;
-            var maxY = Math.Max(rightTextBounds.Y, leftTextBounds.Y);
-            var leftHalfDrawPoint = rightHalfDrawPoint with { X = rightHalfDrawPoint.X - sumX };
-            startY = leftHalfDrawPoint.Y;
-            var bounds = new RectangleF(leftHalfDrawPoint.X, startY - 2, sumX, maxY);
-            Graphics.DrawImage("preload-new.png", bounds, Settings.BackgroundColor);
+    var currentHeight = 0f;
+    foreach (var (text, color) in wispsItems)
+    {
+        var textSize = Graphics.MeasureText(text);
+        var drawPosition = new Vector2N(Settings.PositionX + width - textSize.X + 15, Settings.PositionY + currentHeight + 5);
+        Graphics.DrawText(text, drawPosition, color);
+        currentHeight += textSize.Y;
+    }
+}
 
-            foreach (var (text, color) in wispsItems)
-            {
-                drawTextVector2 = Graphics.DrawText(text, leftHalfDrawPoint, color);
-                leftHalfDrawPoint.Y += drawTextVector2.Y;
-            }
-
-            GameController.LeftPanel.StartDrawPoint = new Vector2(origStartPoint.X, origStartPoint.Y + maxY + 10);
-        }
     }
 }

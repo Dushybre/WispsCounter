@@ -18,7 +18,8 @@ namespace  WispsCounter
         }
 
         public ToggleNode Enable { get; set; } = new ToggleNode(true);
-        public RangeNode<int> DrawXOffset { get; set; } = new RangeNode<int>(0, -150, 150);
+        public RangeNode<int> PositionX { get; set; } = new RangeNode<int>(0, 0, 9999);
+        public RangeNode<int> PositionY { get; set; } = new RangeNode<int>(0, 0, 9999);
         public ColorNode BackgroundColor { get; set; }
         public ColorNode PurpleWispsTextColor { get; set; }
         public ColorNode YellowWispsTextColor { get; set; }
