@@ -12,7 +12,7 @@ namespace  WispsCounter
             
             PurpleWispsTextColor = new ColorBGRA(255, 0, 255, 255);
             YellowWispsTextColor = new ColorBGRA(255, 255, 0, 255);
-            BlueWispsTextColor = new ColorBGRA(0, 0, 255, 255);
+            BlueWispsTextColor = new ColorBGRA(0, 208, 255, 255);
 
             TotalWispsTextColor = new ColorBGRA(255, 255, 255, 255);
         }
