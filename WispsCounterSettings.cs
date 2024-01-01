@@ -26,5 +26,6 @@ namespace  WispsCounter
         public ColorNode TotalWispsTextColor { get; set; }
         public ToggleNode EnableTotalWisps { get; set; } = new ToggleNode(true);
         public ToggleNode DisableInHideout { get; set; } = new ToggleNode(true);
+        public RangeNode<int> TickDelay { get; set; } = new RangeNode<int>(15, 0, 150);
     }
 }

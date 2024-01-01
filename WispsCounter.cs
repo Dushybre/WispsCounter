@@ -26,6 +26,7 @@ namespace  WispsCounter
 
         private float startY;
         private bool CanRender;
+        private int tickCounter = 0;
         private DebugInformation debugInformation;
         private Vector2N drawTextVector2;
         private RectangleF leftPanelStartDrawRect = RectangleF.Empty;
@@ -54,29 +55,32 @@ namespace  WispsCounter
 
         private void TickLogic()
         {
-            var gameUi = GameController.Game.IngameState.IngameUi;
-
-            if (GameController.Area.CurrentArea == null || (GameController.Area.CurrentArea.IsHideout && Settings.DisableInHideout) || gameUi.InventoryPanel.IsVisible || gameUi.SyndicatePanel.IsVisibleLocal)
-            {
-                CanRender = false;
+            if (tickCounter <= Settings.TickDelay) {
+                tickCounter++;
                 return;
+            } else {
+                tickCounter = 0;
+                var gameUi = GameController.Game.IngameState.IngameUi;
+
+                if (GameController.Area.CurrentArea == null || (GameController.Area.CurrentArea.IsHideout && Settings.DisableInHideout) || gameUi.InventoryPanel.IsVisible || gameUi.SyndicatePanel.IsVisibleLocal) {
+                    CanRender = false;
+                    return;
+                }
+
+                var UIHover = GameController.Game.IngameState.UIHover;
+
+                if (UIHover.Tooltip != null && UIHover.Tooltip.IsVisibleLocal && UIHover.Tooltip.GetClientRectCache.Intersects(leftPanelStartDrawRect)) {
+                    CanRender = false;
+                    return;
+                }
+
+                CanRender = true;
+                
+                purpleWisps = $"{GameController.IngameState.Data.ServerData.CurrentWildWisps} Wild";
+                yellowWisps = $"{GameController.IngameState.Data.ServerData.CurrentVividWisps} Vivid";
+                blueWisps = $"{GameController.IngameState.Data.ServerData.CurrentPrimalWisps} Primal";
+                totalWisps = $"{GameController.IngameState.Data.ServerData.CurrentWildWisps + GameController.IngameState.Data.ServerData.CurrentVividWisps + GameController.IngameState.Data.ServerData.CurrentPrimalWisps} Wisps";
             }
-
-            var UIHover = GameController.Game.IngameState.UIHover;
-
-            if (UIHover.Tooltip != null && UIHover.Tooltip.IsVisibleLocal &&
-                UIHover.Tooltip.GetClientRectCache.Intersects(leftPanelStartDrawRect))
-            {
-                CanRender = false;
-                return;
-            }
-
-            CanRender = true;
-			
-			purpleWisps = $"{GameController.IngameState.Data.ServerData.CurrentWildWisps} Wild";
-			yellowWisps = $"{GameController.IngameState.Data.ServerData.CurrentVividWisps} Vivid";
-			blueWisps = $"{GameController.IngameState.Data.ServerData.CurrentPrimalWisps} Primal";
-            totalWisps = $"{GameController.IngameState.Data.ServerData.CurrentWildWisps + GameController.IngameState.Data.ServerData.CurrentVividWisps + GameController.IngameState.Data.ServerData.CurrentPrimalWisps} Wisps";
         }
 
         public override void Render()
