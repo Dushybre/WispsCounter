@@ -40,13 +40,6 @@ namespace  WispsCounter
 
         public override bool Initialise()
         {
-            Input.RegisterKey(Keys.F10);
-
-            Input.ReleaseKey += (sender, keys) =>
-            {
-                if (keys == Keys.F10) Settings.Enable.Value = !Settings.Enable;
-            };
-
             GameController.LeftPanel.WantUse(() => Settings.Enable);
 
             debugInformation = new DebugInformation("Game FPS", "Collect game fps", false);
