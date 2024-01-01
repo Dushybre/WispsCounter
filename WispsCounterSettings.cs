@@ -25,5 +25,6 @@ namespace  WispsCounter
         public ColorNode BlueWispsTextColor { get; set; }
         public ColorNode TotalWispsTextColor { get; set; }
         public ToggleNode EnableTotalWisps { get; set; } = new ToggleNode(true);
+        public ToggleNode DisableInHideout { get; set; } = new ToggleNode(true);
     }
 }

@@ -56,7 +56,7 @@ namespace  WispsCounter
         {
             var gameUi = GameController.Game.IngameState.IngameUi;
 
-            if (GameController.Area.CurrentArea == null || gameUi.InventoryPanel.IsVisible || gameUi.SyndicatePanel.IsVisibleLocal)
+            if (GameController.Area.CurrentArea == null || (GameController.Area.CurrentArea.IsHideout && Settings.DisableInHideout) || gameUi.InventoryPanel.IsVisible || gameUi.SyndicatePanel.IsVisibleLocal)
             {
                 CanRender = false;
                 return;
