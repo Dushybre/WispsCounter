@@ -15,8 +15,8 @@ namespace WispsCounter
             YellowWispsTextColor = new ColorBGRA(255, 255, 0, 255);
             BlueWispsTextColor = new ColorBGRA(0, 208, 255, 255);
             TotalWispsTextColor = new ColorBGRA(255, 255, 255, 255);
-            FuelTextColor = new ColorBGRA(0, 208, 255, 255);
-            FuelFractionTextColor = new ColorBGRA(0, 208, 255, 255);
+            FuelTextColor = new ColorBGRA(0, 255, 0, 255);
+            FuelFractionTextColor = new ColorBGRA(0, 255, 0, 255);
         }
 
         public ToggleNode Enable { get; set; } = new ToggleNode(true);
